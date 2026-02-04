@@ -45,6 +45,7 @@ import com.example.mecaos.ui.flotte.FlotteScreen
 import com.example.mecaos.ui.flotte.FlotteViewModel
 import com.example.mecaos.ui.inventaire.InventaireScreen
 import com.example.mecaos.ui.inventaire.InventaireViewModel
+import com.example.mecaos.ui.support.SupportScreen
 import com.example.mecaos.ui.theme.MecaOSTheme
 
 class MainActivity : ComponentActivity() {
@@ -119,7 +120,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                     text = "© 2025 Guillaume Foisy",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp),
+                        .padding(top = 8.dp, bottom = 8.dp),
                     textAlign = TextAlign.Center
                 )
             }
@@ -173,6 +174,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         Text("Flottes screen is not available in preview.")
                     }
                 }
+            }
+            "Support Technique" -> {
+                SupportScreen(modifier = Modifier.padding(innerPadding))
             }
             else -> BlankPage(
                 title = currentScreen,
