@@ -6,6 +6,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -63,7 +64,10 @@ fun BonsDeTravauxScreen(viewModel: BonsDeTravauxViewModel, modifier: Modifier = 
         }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues).horizontalScroll(rememberScrollState())) {
-            LazyColumn(modifier = Modifier.width(1200.dp)) {
+            LazyColumn(
+                modifier = Modifier.width(1200.dp),
+                contentPadding = PaddingValues(bottom = 80.dp, end = 16.dp) // Added padding for FAB
+            ) {
                 item {
                     Row(
                         modifier = Modifier
