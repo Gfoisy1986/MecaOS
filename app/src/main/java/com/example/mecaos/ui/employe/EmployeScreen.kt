@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -83,6 +82,7 @@ fun EmployeScreen(viewModel: EmployeViewModel, modifier: Modifier = Modifier) {
                                 .padding(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            Text(text = "ID", modifier = Modifier.weight(0.5f), fontWeight = FontWeight.Bold)
                             Text(text = "Nom", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                             Text(text = "Email", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                             Text(text = "Cellulaire", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
@@ -108,6 +108,7 @@ fun EmployeScreen(viewModel: EmployeViewModel, modifier: Modifier = Modifier) {
                                 .padding(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            Text(text = item.id.toString(), modifier = Modifier.weight(0.5f))
                             Text(text = item.nom, modifier = Modifier.weight(1f))
                             Text(text = item.email, modifier = Modifier.weight(1f))
                             Text(text = item.cellulaire, modifier = Modifier.weight(1f))
@@ -179,7 +180,6 @@ fun EmployeUpsertDialog(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(max = 500.dp)
                     .verticalScroll(rememberScrollState())
             ) {
                 OutlinedTextField(

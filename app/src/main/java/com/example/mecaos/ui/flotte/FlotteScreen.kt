@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -80,7 +79,9 @@ fun FlotteScreen(viewModel: FlotteViewModel, modifier: Modifier = Modifier) {
                 }
             }
         } else {
-            Box(modifier = Modifier.padding(paddingValues).horizontalScroll(rememberScrollState())) {
+            Box(modifier = Modifier
+                .padding(paddingValues)
+                .horizontalScroll(rememberScrollState())) {
                 LazyColumn(
                     modifier = Modifier.width(2400.dp),
                     contentPadding = PaddingValues(bottom = 80.dp, end = 16.dp) // Added padding for FAB
@@ -92,6 +93,7 @@ fun FlotteScreen(viewModel: FlotteViewModel, modifier: Modifier = Modifier) {
                                 .padding(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            Text(text = "ID", modifier = Modifier.weight(0.5f), fontWeight = FontWeight.Bold)
                             Text(text = "Numero serie VIN", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                             Text(text = "Numero unité", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                             Text(text = "Noms entreprise", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
@@ -124,6 +126,7 @@ fun FlotteScreen(viewModel: FlotteViewModel, modifier: Modifier = Modifier) {
                                 .padding(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            Text(text = item.id.toString(), modifier = Modifier.weight(0.5f))
                             Text(text = item.serie, modifier = Modifier.weight(1f))
                             Text(text = item.unit, modifier = Modifier.weight(1f))
                             Text(text = item.noment, modifier = Modifier.weight(1f))
@@ -214,7 +217,6 @@ fun FlotteUpsertDialog(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(max = 500.dp)
                     .verticalScroll(rememberScrollState())
             ) {
                 OutlinedTextField(
@@ -234,7 +236,6 @@ fun FlotteUpsertDialog(
                         value = noment,
                         onValueChange = { noment = it },
                         label = { Text("Noms entreprise") },
-                        readOnly = true,
                         trailingIcon = {
                             Icon(
                                 Icons.Filled.ArrowDropDown,

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -83,6 +82,7 @@ fun ClientScreen(viewModel: ClientViewModel, modifier: Modifier = Modifier) {
                                 .padding(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            Text(text = "ID", modifier = Modifier.weight(0.5f), fontWeight = FontWeight.Bold)
                             Text(text = "Noms entreprise", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                             Text(text = "Noms du proprietaire", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                             Text(text = "Noms du responsable", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
@@ -106,6 +106,7 @@ fun ClientScreen(viewModel: ClientViewModel, modifier: Modifier = Modifier) {
                                 .padding(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            Text(text = item.id.toString(), modifier = Modifier.weight(0.5f))
                             Text(text = item.nomentreprise, modifier = Modifier.weight(1f))
                             Text(text = item.nomproprietaire, modifier = Modifier.weight(1f))
                             Text(text = item.nomresponsable, modifier = Modifier.weight(1f))
@@ -173,7 +174,6 @@ fun ClientUpsertDialog(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(max = 500.dp)
                     .verticalScroll(rememberScrollState())
             ) {
                 OutlinedTextField(

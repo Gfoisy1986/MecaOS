@@ -40,6 +40,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mecaos.ui.ViewModelFactory
 import com.example.mecaos.ui.bon.BonsDeTravauxScreen
@@ -180,7 +181,7 @@ fun GitHubDialog(onDismiss: () -> Unit) {
     val isGithubInstalled = try {
         packageManager.getPackageInfo("com.github.android", PackageManager.GET_ACTIVITIES)
         true
-    } catch (e: PackageManager.NameNotFoundException) {
+    } catch (_: PackageManager.NameNotFoundException) {
         false
     }
 
@@ -191,7 +192,7 @@ fun GitHubDialog(onDismiss: () -> Unit) {
         confirmButton = {
             if (isGithubInstalled) {
                 Button(onClick = {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(repoUrl)).apply {
+                    val intent = Intent(Intent.ACTION_VIEW, repoUrl.toUri()).apply {
                         setPackage("com.github.android")
                     }
                     context.startActivity(intent)
@@ -201,7 +202,7 @@ fun GitHubDialog(onDismiss: () -> Unit) {
                 }
             } else {
                 Button(onClick = {
-                    val playStoreIntent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.github.android"))
+                    val playStoreIntent = Intent(Intent.ACTION_VIEW, "market://details?id=com.github.android".toUri())
                     context.startActivity(playStoreIntent)
                     onDismiss()
                 }) {

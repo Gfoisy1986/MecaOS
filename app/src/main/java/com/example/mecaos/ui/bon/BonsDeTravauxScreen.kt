@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -65,7 +64,7 @@ fun BonsDeTravauxScreen(viewModel: BonsDeTravauxViewModel, modifier: Modifier = 
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues).horizontalScroll(rememberScrollState())) {
             LazyColumn(
-                modifier = Modifier.width(1200.dp),
+                modifier = Modifier.width(1300.dp),
                 contentPadding = PaddingValues(bottom = 80.dp, end = 16.dp) // Added padding for FAB
             ) {
                 item {
@@ -75,7 +74,8 @@ fun BonsDeTravauxScreen(viewModel: BonsDeTravauxViewModel, modifier: Modifier = 
                             .padding(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = "Nom de l'entreprise", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
+                        Text(text = "ID", modifier = Modifier.weight(0.5f), fontWeight = FontWeight.Bold)
+                        Text(text = "Nom de l\'entreprise", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                         Text(text = "Unité", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                         Text(text = "Série", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                         Text(text = "Statut", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
@@ -95,6 +95,7 @@ fun BonsDeTravauxScreen(viewModel: BonsDeTravauxViewModel, modifier: Modifier = 
                             .padding(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        Text(text = item.id.toString(), modifier = Modifier.weight(0.5f))
                         Text(text = item.nomEntreprise, modifier = Modifier.weight(1f))
                         Text(text = item.unit, modifier = Modifier.weight(1f))
                         Text(text = item.serie, modifier = Modifier.weight(1f))
@@ -163,7 +164,6 @@ fun BonsDeTravauxUpsertDialog(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(max = 500.dp)
                     .verticalScroll(rememberScrollState())
             ) {
 

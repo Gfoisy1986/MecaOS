@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -77,7 +76,7 @@ fun InventaireScreen(viewModel: InventaireViewModel, modifier: Modifier = Modifi
         } else {
             Box(modifier = Modifier.padding(paddingValues).horizontalScroll(rememberScrollState())) {
                 LazyColumn(
-                    modifier = Modifier.width(1000.dp),
+                    modifier = Modifier.width(1100.dp),
                     contentPadding = PaddingValues(bottom = 80.dp, end = 16.dp) // Added padding for FAB
                 ) {
                     item {
@@ -87,6 +86,7 @@ fun InventaireScreen(viewModel: InventaireViewModel, modifier: Modifier = Modifi
                                 .padding(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            Text(text = "ID", modifier = Modifier.weight(0.5f), fontWeight = FontWeight.Bold)
                             Text(text = "Nom", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                             Text(text = "Quantité", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                             Text(text = "Prix", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
@@ -105,6 +105,7 @@ fun InventaireScreen(viewModel: InventaireViewModel, modifier: Modifier = Modifi
                                 .padding(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            Text(text = item.id.toString(), modifier = Modifier.weight(0.5f))
                             Text(text = item.nom, modifier = Modifier.weight(1f))
                             Text(text = item.quantite.toString(), modifier = Modifier.weight(1f))
                             Text(text = "$${item.prix}", modifier = Modifier.weight(1f))
@@ -162,7 +163,6 @@ fun InventaireUpsertDialog(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(max = 500.dp)
                     .verticalScroll(rememberScrollState())
             ) {
                 OutlinedTextField(
