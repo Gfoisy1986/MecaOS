@@ -38,7 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.mecaos.data.Inventaire
+import com.example.mecaos.data.entity.Inventaire
 
 @Composable
 fun InventaireScreen(viewModel: InventaireViewModel, modifier: Modifier = Modifier) {
@@ -49,79 +49,59 @@ fun InventaireScreen(viewModel: InventaireViewModel, modifier: Modifier = Modifi
     Scaffold(
         modifier = modifier,
         floatingActionButton = {
-            if (inventaire.isNotEmpty()) {
-                FloatingActionButton(onClick = {
-                    selectedItem = null
-                    showDialog = true
-                }) {
-                    Icon(Icons.Filled.Add, contentDescription = "Créer un item")
-                }
+            FloatingActionButton(onClick = {
+                selectedItem = null
+                showDialog = true
+            }) {
+                Icon(Icons.Filled.Add, contentDescription = "Créer un item")
             }
         }
     ) { paddingValues ->
-        if (inventaire.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
+        Box(modifier = Modifier.padding(paddingValues).horizontalScroll(rememberScrollState())) {
+            LazyColumn(
+                modifier = Modifier.width(1100.dp),
+                contentPadding = PaddingValues(bottom = 80.dp, end = 16.dp) // Added padding for FAB
             ) {
-                Button(onClick = {
-                    selectedItem = null
-                    showDialog = true
-                }) {
-                    Text("Créer un item")
-                }
-            }
-        } else {
-            Box(modifier = Modifier.padding(paddingValues).horizontalScroll(rememberScrollState())) {
-                LazyColumn(
-                    modifier = Modifier.width(1100.dp),
-                    contentPadding = PaddingValues(bottom = 80.dp, end = 16.dp) // Added padding for FAB
-                ) {
-                    item {
-                        Row(
-                            modifier = Modifier
-                                .background(MaterialTheme.colorScheme.primaryContainer)
-                                .padding(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(text = "ID", modifier = Modifier.weight(0.5f), fontWeight = FontWeight.Bold)
-                            Text(text = "Nom", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
-                            Text(text = "Quantité", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
-                            Text(text = "Prix", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
-                            Box(modifier = Modifier.weight(0.5f))
-                        }
+                item {
+                    Row(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.primaryContainer)
+                            .padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(text = "ID", modifier = Modifier.weight(0.5f), fontWeight = FontWeight.Bold)
+                        Text(text = "Name", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
+                        Text(text = "Quantity", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
+                        Box(modifier = Modifier.weight(0.5f))
                     }
-                    itemsIndexed(inventaire) { index, item ->
-                        val backgroundColor = if (index % 2 == 0) {
-                            MaterialTheme.colorScheme.surface
-                        } else {
-                            MaterialTheme.colorScheme.surfaceVariant
-                        }
+                }
+                itemsIndexed(inventaire) { index, item ->
+                    val backgroundColor = if (index % 2 == 0) {
+                        MaterialTheme.colorScheme.surface
+                    } else {
+                        MaterialTheme.colorScheme.surfaceVariant
+                    }
+                    Row(
+                        modifier = Modifier
+                            .background(backgroundColor)
+                            .padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(text = item.inventaireId.toString(), modifier = Modifier.weight(0.5f))
+                        Text(text = item.name, modifier = Modifier.weight(1f))
+                        Text(text = item.quantity.toString(), modifier = Modifier.weight(1f))
                         Row(
-                            modifier = Modifier
-                                .background(backgroundColor)
-                                .padding(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                            modifier = Modifier.weight(0.5f),
+                            horizontalArrangement = Arrangement.End
                         ) {
-                            Text(text = item.id.toString(), modifier = Modifier.weight(0.5f))
-                            Text(text = item.nom, modifier = Modifier.weight(1f))
-                            Text(text = item.quantite.toString(), modifier = Modifier.weight(1f))
-                            Text(text = "$${item.prix}", modifier = Modifier.weight(1f))
-                            Row(
-                                modifier = Modifier.weight(0.5f),
-                                horizontalArrangement = Arrangement.End
-                            ) {
-                                IconButton(onClick = {
-                                    selectedItem = item
-                                    showDialog = true
-                                }) {
-                                    Icon(Icons.Filled.Edit, contentDescription = "Modifier")
-                                }
-                                IconButton(onClick = { viewModel.delete(item) }) {
-                                    Icon(Icons.Filled.Delete, contentDescription = "Supprimer")
-                                }
+                            IconButton(onClick = {
+                                selectedItem = item
+                                showDialog = true
+                            }) {
+                                Icon(Icons.Filled.Edit, contentDescription = "Modifier")
+                            }
+                            IconButton(onClick = { viewModel.delete(item) }) {
+                                Icon(Icons.Filled.Delete, contentDescription = "Supprimer")
                             }
                         }
                     }
@@ -152,9 +132,8 @@ fun InventaireUpsertDialog(
     onDismiss: () -> Unit,
     onSave: (Inventaire) -> Unit
 ) {
-    var nom by remember { mutableStateOf(item?.nom ?: "") }
-    var quantite by remember { mutableStateOf(item?.quantite?.toString() ?: "") }
-    var prix by remember { mutableStateOf(item?.prix?.toString() ?: "") }
+    var name by remember { mutableStateOf(item?.name ?: "") }
+    var quantity by remember { mutableStateOf(item?.quantity?.toString() ?: "") }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -166,21 +145,15 @@ fun InventaireUpsertDialog(
                     .verticalScroll(rememberScrollState())
             ) {
                 OutlinedTextField(
-                    value = nom,
-                    onValueChange = { nom = it },
-                    label = { Text("Nom") },
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Name") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
-                    value = quantite,
-                    onValueChange = { quantite = it },
-                    label = { Text("Quantité") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                OutlinedTextField(
-                    value = prix,
-                    onValueChange = { prix = it },
-                    label = { Text("Prix") },
+                    value = quantity,
+                    onValueChange = { quantity = it },
+                    label = { Text("Quantity") },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -189,10 +162,9 @@ fun InventaireUpsertDialog(
             Button(
                 onClick = {
                     val updatedItem = Inventaire(
-                        id = item?.id ?: 0,
-                        nom = nom,
-                        quantite = quantite.toIntOrNull() ?: 0,
-                        prix = prix.toDoubleOrNull() ?: 0.0
+                        inventaireId = item?.inventaireId ?: 0,
+                        name = name,
+                        quantity = quantity.toIntOrNull() ?: 0
                     )
                     onSave(updatedItem)
                 }

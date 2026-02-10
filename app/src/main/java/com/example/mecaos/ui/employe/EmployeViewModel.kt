@@ -2,8 +2,8 @@ package com.example.mecaos.ui.employe
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mecaos.data.Employe
-import com.example.mecaos.data.EmployeDao
+import com.example.mecaos.data.dao.EmployeDao
+import com.example.mecaos.data.entity.Employe
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn

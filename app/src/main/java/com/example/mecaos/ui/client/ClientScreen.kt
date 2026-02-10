@@ -37,7 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.mecaos.data.Client
+import com.example.mecaos.data.entity.Client
 
 @Composable
 fun ClientScreen(viewModel: ClientViewModel, modifier: Modifier = Modifier) {
@@ -106,15 +106,15 @@ fun ClientScreen(viewModel: ClientViewModel, modifier: Modifier = Modifier) {
                                 .padding(8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = item.id.toString(), modifier = Modifier.weight(0.5f))
-                            Text(text = item.nomentreprise, modifier = Modifier.weight(1f))
-                            Text(text = item.nomproprietaire, modifier = Modifier.weight(1f))
-                            Text(text = item.nomresponsable, modifier = Modifier.weight(1f))
-                            Text(text = item.addresse, modifier = Modifier.weight(1f))
-                            Text(text = item.telephone, modifier = Modifier.weight(1f))
+                            Text(text = item.clientId.toString(), modifier = Modifier.weight(0.5f))
+                            Text(text = item.name, modifier = Modifier.weight(1f))
+                            Text(text = "", modifier = Modifier.weight(1f))
+                            Text(text = "", modifier = Modifier.weight(1f))
+                            Text(text = item.address, modifier = Modifier.weight(1f))
+                            Text(text = item.phone, modifier = Modifier.weight(1f))
                             Text(text = item.email, modifier = Modifier.weight(1f))
-                            Text(text = item.fax, modifier = Modifier.weight(1f))
-                            Text(text = item.tauxhx.toString(), modifier = Modifier.weight(1f))
+                            Text(text = "", modifier = Modifier.weight(1f))
+                            Text(text = "", modifier = Modifier.weight(1f))
                             Row(
                                 modifier = Modifier.weight(0.5f),
                                 horizontalArrangement = Arrangement.End
@@ -158,14 +158,10 @@ fun ClientUpsertDialog(
     onDismiss: () -> Unit,
     onSave: (Client) -> Unit
 ) {
-    var nomentreprise by remember { mutableStateOf(item?.nomentreprise ?: "") }
-    var nomproprietaire by remember { mutableStateOf(item?.nomproprietaire ?: "") }
-    var nomresponsable by remember { mutableStateOf(item?.nomresponsable ?: "") }
-    var addresse by remember { mutableStateOf(item?.addresse ?: "") }
-    var telephone by remember { mutableStateOf(item?.telephone ?: "") }
+    var name by remember { mutableStateOf(item?.name ?: "") }
+    var address by remember { mutableStateOf(item?.address ?: "") }
+    var phone by remember { mutableStateOf(item?.phone ?: "") }
     var email by remember { mutableStateOf(item?.email ?: "") }
-    var fax by remember { mutableStateOf(item?.fax ?: "") }
-    var tauxhx by remember { mutableStateOf(item?.tauxhx?.toString() ?: "") }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -177,32 +173,20 @@ fun ClientUpsertDialog(
                     .verticalScroll(rememberScrollState())
             ) {
                 OutlinedTextField(
-                    value = nomentreprise,
-                    onValueChange = { nomentreprise = it },
+                    value = name,
+                    onValueChange = { name = it },
                     label = { Text("Noms entreprise") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
-                    value = nomproprietaire,
-                    onValueChange = { nomproprietaire = it },
-                    label = { Text("Noms du proprietaire") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                OutlinedTextField(
-                    value = nomresponsable,
-                    onValueChange = { nomresponsable = it },
-                    label = { Text("Noms du responsable") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                OutlinedTextField(
-                    value = addresse,
-                    onValueChange = { addresse = it },
+                    value = address,
+                    onValueChange = { address = it },
                     label = { Text("Entreprise addresse complete") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
-                    value = telephone,
-                    onValueChange = { telephone = it },
+                    value = phone,
+                    onValueChange = { phone = it },
                     label = { Text("Entreprise telephone") },
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -212,33 +196,17 @@ fun ClientUpsertDialog(
                     label = { Text("Entreprise email") },
                     modifier = Modifier.fillMaxWidth()
                 )
-                OutlinedTextField(
-                    value = fax,
-                    onValueChange = { fax = it },
-                    label = { Text("Fax number") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                OutlinedTextField(
-                    value = tauxhx,
-                    onValueChange = { tauxhx = it },
-                    label = { Text("Taux horraire") },
-                    modifier = Modifier.fillMaxWidth()
-                )
             }
         },
         confirmButton = {
             Button(
                 onClick = {
                     val updatedItem = Client(
-                        id = item?.id ?: 0,
-                        nomentreprise = nomentreprise,
-                        nomproprietaire = nomproprietaire,
-                        nomresponsable = nomresponsable,
-                        addresse = addresse,
-                        telephone = telephone,
-                        email = email,
-                        fax = fax,
-                        tauxhx = tauxhx.toDoubleOrNull() ?: 0.0
+                        clientId = item?.clientId ?: 0,
+                        name = name,
+                        address = address,
+                        phone = phone,
+                        email = email
                     )
                     onSave(updatedItem)
                 }

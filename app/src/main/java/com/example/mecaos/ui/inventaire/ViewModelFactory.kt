@@ -2,7 +2,7 @@ package com.example.mecaos.ui.inventaire
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.mecaos.data.InventaireDao
+import com.example.mecaos.data.dao.InventaireDao
 
 class ViewModelFactory(private val inventaireDao: InventaireDao) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

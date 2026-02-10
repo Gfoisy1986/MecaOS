@@ -2,8 +2,8 @@ package com.example.mecaos.ui.client
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mecaos.data.Client
-import com.example.mecaos.data.ClientDao
+import com.example.mecaos.data.dao.ClientDao
+import com.example.mecaos.data.entity.Client
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn

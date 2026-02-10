@@ -2,9 +2,10 @@ package com.example.mecaos.ui.flotte
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mecaos.data.ClientDao
-import com.example.mecaos.data.Flotte
-import com.example.mecaos.data.FlotteDao
+import com.example.mecaos.data.dao.ClientDao
+import com.example.mecaos.data.dao.FlotteDao
+import com.example.mecaos.data.entity.Client
+import com.example.mecaos.data.entity.Flotte
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -19,7 +20,7 @@ class FlotteViewModel(private val flotteDao: FlotteDao, private val clientDao: C
             initialValue = emptyList()
         )
 
-    val clients = clientDao.getAll()
+    val clients: StateFlow<List<Client>> = clientDao.getAll()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),

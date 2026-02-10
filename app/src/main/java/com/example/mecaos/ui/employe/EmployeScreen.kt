@@ -37,7 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.mecaos.data.Employe
+import com.example.mecaos.data.entity.Employe
 
 @Composable
 fun EmployeScreen(viewModel: EmployeViewModel, modifier: Modifier = Modifier) {

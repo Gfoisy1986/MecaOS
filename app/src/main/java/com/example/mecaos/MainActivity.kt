@@ -53,9 +53,12 @@ import com.example.mecaos.ui.flotte.FlotteScreen
 import com.example.mecaos.ui.flotte.FlotteViewModel
 import com.example.mecaos.ui.inventaire.InventaireScreen
 import com.example.mecaos.ui.inventaire.InventaireViewModel
+import com.example.mecaos.ui.job.JobsScreen
 import com.example.mecaos.ui.license.LicenseScreen
 import com.example.mecaos.ui.support.SupportScreen
 import com.example.mecaos.ui.theme.MecaOSTheme
+import com.example.mecaos.ui.travaux.TravauxScreen
+import com.example.mecaos.ui.travaux.TravauxViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,6 +84,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         "Clients",
         "Flottes",
         "Bons Travaux",
+        "Jobs",
         "Travaux",
         "Calendrier",
         "Facturation",
@@ -156,6 +160,13 @@ fun MainScreen(modifier: Modifier = Modifier) {
             "Bons Travaux" -> {
                 val bonsDeTravauxViewModel: BonsDeTravauxViewModel = viewModel(factory = ViewModelFactory(application.container.database))
                 BonsDeTravauxScreen(viewModel = bonsDeTravauxViewModel, modifier = Modifier.padding(innerPadding))
+            }
+            "Jobs" -> {
+                JobsScreen(modifier = Modifier.padding(innerPadding))
+            }
+            "Travaux" -> {
+                val travauxViewModel: TravauxViewModel = viewModel(factory = ViewModelFactory(application.container.database))
+                TravauxScreen(viewModel = travauxViewModel, modifier = Modifier.padding(innerPadding))
             }
             "Support Technique" -> {
                 SupportScreen(modifier = Modifier.padding(innerPadding))

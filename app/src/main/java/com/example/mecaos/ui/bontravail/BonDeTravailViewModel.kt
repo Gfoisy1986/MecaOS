@@ -3,7 +3,7 @@ package com.example.mecaos.ui.bontravail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mecaos.data.AppDatabase
-import com.example.mecaos.data.WorkOrder
+import com.example.mecaos.data.entity.WorkOrder
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn

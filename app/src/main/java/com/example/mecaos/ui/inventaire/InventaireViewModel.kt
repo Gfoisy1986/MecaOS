@@ -2,8 +2,8 @@ package com.example.mecaos.ui.inventaire
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mecaos.data.Inventaire
-import com.example.mecaos.data.InventaireDao
+import com.example.mecaos.data.dao.InventaireDao
+import com.example.mecaos.data.entity.Inventaire
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn

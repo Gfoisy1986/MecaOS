@@ -42,8 +42,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.mecaos.data.Client
-import com.example.mecaos.data.Flotte
+import com.example.mecaos.data.entity.Client
+import com.example.mecaos.data.entity.Flotte
 
 @Composable
 fun FlotteScreen(viewModel: FlotteViewModel, modifier: Modifier = Modifier) {
@@ -249,8 +249,8 @@ fun FlotteUpsertDialog(
                         onDismissRequest = { clientMenuExpanded = false }
                     ) {
                         clients.forEach {
-                            DropdownMenuItem(text = { Text(it.nomentreprise) }, onClick = {
-                                noment = it.nomentreprise
+                            DropdownMenuItem(text = { Text(it.name) }, onClick = {
+                                noment = it.name
                                 clientMenuExpanded = false
                             })
                         }

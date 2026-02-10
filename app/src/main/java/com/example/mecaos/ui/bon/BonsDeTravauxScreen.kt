@@ -42,8 +42,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.mecaos.data.Flotte
-import com.example.mecaos.data.WorkOrder
+import com.example.mecaos.data.entity.Flotte
+import com.example.mecaos.data.entity.WorkOrder
 
 @Composable
 fun BonsDeTravauxScreen(viewModel: BonsDeTravauxViewModel, modifier: Modifier = Modifier) {
@@ -209,8 +209,7 @@ fun BonsDeTravauxUpsertDialog(
                         OutlinedTextField(
                             value = status,
                             onValueChange = { },
-                            label = { Text("Statut") },
-                            readOnly = true,
+                            label = { Text("Statut") },readOnly = true,
                             trailingIcon = {
                                 Icon(
                                     Icons.Filled.ArrowDropDown,
