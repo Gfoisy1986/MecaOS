@@ -15,7 +15,7 @@ interface FlotteDao {
     fun getAll(): Flow<List<Flotte>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(flotte: Flotte)
+    suspend fun insert(flotte: Flotte): Long
 
     @Update
     suspend fun update(flotte: Flotte)
