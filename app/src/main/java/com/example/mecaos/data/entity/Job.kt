@@ -16,5 +16,6 @@ data class Job(
     val jobId: Int = 0,
     val workOrderId: Int,
     val name: String,
-    val description: String
+    val description: String,
+    val status: String = "at work"
 )

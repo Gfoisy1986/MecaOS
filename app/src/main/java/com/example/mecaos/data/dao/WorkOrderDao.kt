@@ -24,4 +24,7 @@ interface WorkOrderDao {
 
     @Query("SELECT * FROM work_orders WHERE status = 'active' ORDER BY id DESC")
     fun getActiveWorkOrders(): Flow<List<WorkOrder>>
+
+    @Query("SELECT * FROM work_orders WHERE id = :workOrderId")
+    fun getWorkOrder(workOrderId: Int): Flow<WorkOrder?>
 }

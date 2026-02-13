@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -51,7 +52,7 @@ fun JobsScreen(
         JobsListScreen(modifier = modifier, workOrder = selectedWorkOrder!!, onBack = { selectedWorkOrder = null })
     } else {
         LazyColumn(modifier = modifier.padding(16.dp)) {
-            items(workOrders) {
+            items(workOrders.filter { it.status == "active" }) {
                 Card(modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
@@ -94,6 +95,12 @@ fun JobsListScreen(
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(text = job.name)
                                 Text(text = job.description)
+                                Text(text = job.status)
+                            }
+                            if (job.status == "at work") {
+                                IconButton(onClick = { viewModel.updateJob(job.copy(status = "finish")) }) {
+                                    Icon(Icons.Default.Done, contentDescription = "Finish Job")
+                                }
                             }
                             IconButton(onClick = { viewModel.deleteJob(job) }) {
                                 Icon(Icons.Default.Delete, contentDescription = "Delete Job")
@@ -116,11 +123,11 @@ fun JobsListScreen(
     if (showDialog) {
         JobDialog(job = selectedJob,
             onDismiss = { showDialog = false },
-            onConfirm = { name, description ->
+            onConfirm = { name, description, status ->
                 if (selectedJob == null) {
                     viewModel.addJob(name, description)
                 } else {
-                    viewModel.updateJob(selectedJob!!.copy(name = name, description = description))
+                    viewModel.updateJob(selectedJob!!.copy(name = name, description = description, status = status))
                 }
                 showDialog = false
             })
@@ -132,10 +139,13 @@ fun JobsListScreen(
 fun JobDialog(
     job: Job?,
     onDismiss: () -> Unit,
-    onConfirm: (String, String) -> Unit
+    onConfirm: (String, String, String) -> Unit
 ) {
     var name by remember { mutableStateOf(job?.name ?: "") }
     var description by remember { mutableStateOf(job?.description ?: "") }
+    var status by remember { mutableStateOf(job?.status ?: "at work") }
+    val statuses = listOf("at work", "finish")
+    var expanded by remember { mutableStateOf(false) }
 
     AlertDialog(onDismissRequest = onDismiss,
         title = { Text(text = if (job == null) "Add Job" else "Edit Job") },
@@ -143,10 +153,23 @@ fun JobDialog(
             Column {
                 OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Name") })
                 OutlinedTextField(value = description, onValueChange = { description = it }, label = { Text("Description") })
+                Box {
+                    OutlinedTextField(
+                        value = status,
+                        onValueChange = {},
+                        label = { Text("Status") },
+                        readOnly = true,
+                        modifier = Modifier.clickable { expanded = true })
+                    androidx.compose.material3.DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                        statuses.forEach { status_ ->
+                            androidx.compose.material3.DropdownMenuItem(text = { Text(status_) }, onClick = { status = status_; expanded = false })
+                        }
+                    }
+                }
             }
         },
         confirmButton = {
-            Button(onClick = { onConfirm(name, description) }) {
+            Button(onClick = { onConfirm(name, description, status) }) {
                 Text("Confirm")
             }
         },

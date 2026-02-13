@@ -35,7 +35,7 @@ class ViewModelFactory(private val db: AppDatabase, private val workOrderId: Int
         }
         if (modelClass.isAssignableFrom(JobsViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return JobsViewModel(db.jobDao(), workOrderId!!) as T
+            return JobsViewModel(db.jobDao(), db.workOrderDao(), workOrderId!!) as T
         }
         if (modelClass.isAssignableFrom(TravauxViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

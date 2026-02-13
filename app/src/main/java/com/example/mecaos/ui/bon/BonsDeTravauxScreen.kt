@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -19,6 +21,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
@@ -50,6 +53,11 @@ fun BonsDeTravauxScreen(viewModel: BonsDeTravauxViewModel, modifier: Modifier = 
     val workOrders by viewModel.workOrders.collectAsState()
     var showDialog by remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf<WorkOrder?>(null) }
+    var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
+    var workOrderToDelete by remember { mutableStateOf<WorkOrder?>(null) }
+    var showBillingConfirmationDialog by remember { mutableStateOf(false) }
+    var workOrderToBill by remember { mutableStateOf<WorkOrder?>(null) }
+
 
     Scaffold(
         modifier = modifier,
@@ -75,12 +83,12 @@ fun BonsDeTravauxScreen(viewModel: BonsDeTravauxViewModel, modifier: Modifier = 
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(text = "ID", modifier = Modifier.weight(0.5f), fontWeight = FontWeight.Bold)
-                        Text(text = "Nom de l\'entreprise", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
+                        Text(text = "Nom de l'entreprise", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                         Text(text = "Unité", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                         Text(text = "Série", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                         Text(text = "Statut", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
                         Text(text = "Nom personnalisé", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
-                        Box(modifier = Modifier.weight(0.5f))
+                        Box(modifier = Modifier.weight(1f))
                     }
                 }
                 itemsIndexed(workOrders) { index, item ->
@@ -102,8 +110,9 @@ fun BonsDeTravauxScreen(viewModel: BonsDeTravauxViewModel, modifier: Modifier = 
                         Text(text = item.status, modifier = Modifier.weight(1f))
                         Text(text = item.customName, modifier = Modifier.weight(1f))
                         Row(
-                            modifier = Modifier.weight(0.5f),
-                            horizontalArrangement = Arrangement.End
+                            modifier = Modifier.weight(1f),
+                            horizontalArrangement = Arrangement.End,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             IconButton(onClick = {
                                 selectedItem = item
@@ -111,7 +120,22 @@ fun BonsDeTravauxScreen(viewModel: BonsDeTravauxViewModel, modifier: Modifier = 
                             }) {
                                 Icon(Icons.Filled.Edit, contentDescription = "Modifier")
                             }
-                            IconButton(onClick = { viewModel.delete(item) }) {
+                            Spacer(modifier = Modifier.width(8.dp))
+                            IconButton(onClick = {
+                                workOrderToBill = item
+                                showBillingConfirmationDialog = true
+                            }) {
+                                Icon(
+                                    Icons.Filled.AttachMoney,
+                                    contentDescription = "Facturer",
+                                    modifier = Modifier.size(36.dp)
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(8.dp))
+                            IconButton(onClick = {
+                                workOrderToDelete = item
+                                showDeleteConfirmationDialog = true
+                            }) {
                                 Icon(Icons.Filled.Delete, contentDescription = "Supprimer")
                             }
                         }
@@ -134,6 +158,52 @@ fun BonsDeTravauxScreen(viewModel: BonsDeTravauxViewModel, modifier: Modifier = 
                     viewModel.update(updatedItem)
                 }
                 showDialog = false
+            }
+        )
+    }
+
+    if (showDeleteConfirmationDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirmationDialog = false },
+            title = { Text("Confirmer la suppression") },
+            text = { Text("Êtes-vous sûr de vouloir supprimer ce bon de travail ?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        workOrderToDelete?.let { viewModel.delete(it) }
+                        showDeleteConfirmationDialog = false
+                    }
+                ) {
+                    Text("Supprimer")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { showDeleteConfirmationDialog = false }) {
+                    Text("Annuler")
+                }
+            }
+        )
+    }
+
+    if (showBillingConfirmationDialog) {
+        AlertDialog(
+            onDismissRequest = { showBillingConfirmationDialog = false },
+            title = { Text("Confirmer la facturation") },
+            text = { Text("Êtes-vous sûr de vouloir facturer ce bon de travail ? Le statut sera changé à 'close'.") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        workOrderToBill?.let { viewModel.update(it.copy(status = "close")) }
+                        showBillingConfirmationDialog = false
+                    }
+                ) {
+                    Text("Confirmer")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { showBillingConfirmationDialog = false }) {
+                    Text("Annuler")
+                }
             }
         )
     }
@@ -169,7 +239,7 @@ fun BonsDeTravauxUpsertDialog(
 
                 Box(modifier = Modifier.fillMaxWidth()) {
                     OutlinedTextField(
-                        value = if (nomEntreprise.isEmpty() && unit.isEmpty() && serie.isEmpty()) "" else "${nomEntreprise} - ${unit} - ${serie}",
+                        value = if (nomEntreprise.isEmpty() && unit.isEmpty() && serie.isEmpty()) "" else "$nomEntreprise - $unit - $serie",
                         onValueChange = { },
                         label = { Text("Flotte") },
                         readOnly = true,
