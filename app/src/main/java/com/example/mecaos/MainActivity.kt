@@ -1,47 +1,42 @@
 package com.example.mecaos
 
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.net.Uri
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mecaos.ui.MainViewModel
 import com.example.mecaos.ui.ViewModelFactory
 import com.example.mecaos.ui.bon.BonsDeTravauxScreen
 import com.example.mecaos.ui.bon.BonsDeTravauxViewModel
@@ -56,17 +51,14 @@ import com.example.mecaos.ui.inventaire.InventaireViewModel
 import com.example.mecaos.ui.job.JobsScreen
 import com.example.mecaos.ui.license.LicenseScreen
 import com.example.mecaos.ui.support.SupportScreen
-import com.example.mecaos.ui.theme.MecaOSTheme
 import com.example.mecaos.ui.travaux.TravauxScreen
 import com.example.mecaos.ui.travaux.TravauxViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-        enableEdgeToEdge()
         setContent {
-            MecaOSTheme {
+            MaterialTheme {
                 MainScreen()
             }
         }
@@ -75,8 +67,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
-    var menuExpanded by remember { mutableStateOf(false) }
+fun MainScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel = viewModel()) {
     val menuItems = listOf(
         "Acceuil",
         "Inventaire",
@@ -93,53 +84,43 @@ fun MainScreen(modifier: Modifier = Modifier) {
         "GitHub",
         "License"
     )
-    var currentScreen by remember { mutableStateOf("Acceuil") }
-    var showGitHubDialog by remember { mutableStateOf(false) }
 
-    if (showGitHubDialog) {
-        GitHubDialog(onDismiss = { showGitHubDialog = false })
+    if (mainViewModel.showGitHubDialog) {
+        GitHubDialog(onDismiss = { mainViewModel.onGitHubDialogVisibilityChanged(false) })
     }
 
     Scaffold(
         modifier = modifier.fillMaxWidth(),
-        topBar = {
-            TopAppBar(
-                title = { Text("MecaOS") },
-                navigationIcon = {
-                    Box {
-                        IconButton(onClick = { menuExpanded = true }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.menu_icon),
-                                contentDescription = "Menu"
-                            )
-                        }
-                        DropdownMenu(
-                            expanded = menuExpanded,
-                            onDismissRequest = { menuExpanded = false }
-                        ) {
-                            menuItems.forEach { item ->
-                                DropdownMenuItem(
-                                    text = { Text(item) },
-                                    onClick = {
-                                        if (item == "GitHub") {
-                                            showGitHubDialog = true
-                                        } else {
-                                            currentScreen = item
-                                        }
-                                        menuExpanded = false
-                                    }
-                                )
+        bottomBar = {
+            BottomAppBar {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    menuItems.forEach { item ->
+                        TextButton(
+                            onClick = {
+                                if (item == "GitHub") {
+                                    mainViewModel.onGitHubDialogVisibilityChanged(true)
+                                } else {
+                                    mainViewModel.onScreenChanged(item)
+                                }
                             }
+                        ) {
+                            Text(item)
                         }
                     }
                 }
-            )
+            }
         },
         containerColor = Color(0xFFADD8E6) // Light Blue
     ) { innerPadding ->
         val application = LocalContext.current.applicationContext as MecaOSApplication
 
-        when (currentScreen) {
+        when (mainViewModel.currentScreen) {
             "Acceuil" -> AcceuilScreen(modifier = Modifier.padding(innerPadding))
             "Inventaire" -> {
                 val inventaireViewModel: InventaireViewModel = viewModel(factory = ViewModelFactory(application.container.database))
@@ -175,7 +156,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 LicenseScreen(modifier = Modifier.padding(innerPadding))
             }
             else -> BlankPage(
-                title = currentScreen,
+                title = mainViewModel.currentScreen,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -266,7 +247,7 @@ fun BlankPage(title: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    MecaOSTheme {
+    MaterialTheme {
         MainScreen()
     }
 }
@@ -274,7 +255,7 @@ fun GreetingPreview() {
 @Preview(showBackground = true)
 @Composable
 fun AcceuilScreenPreview() {
-    MecaOSTheme {
+    MaterialTheme {
         AcceuilScreen()
     }
 }
