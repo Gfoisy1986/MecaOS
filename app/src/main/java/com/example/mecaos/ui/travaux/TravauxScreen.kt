@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -102,7 +103,7 @@ fun TravauxScreen(viewModel: TravauxViewModel, modifier: Modifier = Modifier) {
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
 
-                            Text(text = "Job: ${jobWithPunches.job.name}")
+                            Text(text = "Job: ${jobWithPunches.job.name} (${jobWithPunches.job.description})")
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 PunchButton(
                                     jobId = jobWithPunches.job.jobId,
@@ -146,8 +147,10 @@ fun TravauxScreen(viewModel: TravauxViewModel, modifier: Modifier = Modifier) {
                     if (showReportDialog) {
                         ReportDialog(
                             onDismiss = { showReportDialog = false },
-                            onConfirm = {
-                                viewModel.punchOut(jobWithPunches.job.jobId, selectedEmploye!!.id, it)
+                            onConfirm = { report, isFinished ->
+                                viewModel.punchOut(jobWithPunches.job.jobId, selectedEmploye!!.id, report)
+                                val status = if (isFinished) "finished" else "at work"
+                                viewModel.updateJobStatus(jobWithPunches.job.jobId, status)
                                 showReportDialog = false
                             }
                         )
@@ -206,22 +209,49 @@ fun PunchButton(
 }
 
 @Composable
-fun ReportDialog(onDismiss: () -> Unit, onConfirm: (String) -> Unit) {
+fun ReportDialog(onDismiss: () -> Unit, onConfirm: (String, Boolean) -> Unit) {
     var report by remember { mutableStateOf("") }
+    var isFinished by remember { mutableStateOf<Boolean?>(null) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(text = "Add Report") },
         text = {
-            OutlinedTextField(
-                value = report,
-                onValueChange = { report = it },
-                label = { Text("Report") },
-                modifier = Modifier.fillMaxWidth()
-            )
+            Column {
+                OutlinedTextField(
+                    value = report,
+                    onValueChange = { report = it },
+                    label = { Text("Report") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Row(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Button(
+                        onClick = { isFinished = true },
+                        colors = if (isFinished == true) ButtonDefaults.buttonColors() else ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                    ) {
+                        Text("Finished")
+                    }
+                    Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                    Button(
+                        onClick = { isFinished = false },
+                        colors = if (isFinished == false) ButtonDefaults.buttonColors() else ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                    ) {
+                        Text("Unfinished")
+                    }
+                }
+            }
         },
         confirmButton = {
-            Button(onClick = { onConfirm(report) }) {
+            Button(
+                onClick = { isFinished?.let { onConfirm(report, it) } },
+                enabled = isFinished != null
+            ) {
                 Text("Confirm")
             }
         },

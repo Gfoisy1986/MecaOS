@@ -24,4 +24,7 @@ interface JobDao {
 
     @Query("SELECT * FROM jobs")
     fun getAllJobs(): Flow<List<Job>>
+
+    @Query("UPDATE jobs SET status = :status WHERE jobId = :jobId")
+    suspend fun updateJobStatus(jobId: Int, status: String)
 }

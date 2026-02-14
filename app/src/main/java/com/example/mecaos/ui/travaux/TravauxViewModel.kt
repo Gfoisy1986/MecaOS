@@ -55,6 +55,12 @@ class TravauxViewModel(
         }
     }
 
+    fun updateJobStatus(jobId: Int, status: String) {
+        viewModelScope.launch {
+            jobDao.updateJobStatus(jobId, status)
+        }
+    }
+
     fun getPunchesForJob(jobId: Int): StateFlow<List<Punch>> {
         return punchDao.getPunchesForJob(jobId)
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
