@@ -171,8 +171,8 @@ fun PunchButton(
     val punchInfo by produceState<Pair<Punch?, Punch?>>(Pair(null, null), selectedEmploye) {
         if (selectedEmploye != null) {
             combine(
-                viewModel.getGlobalLastPunchForEmploye(selectedEmploye!!.id),
-                viewModel.getLastPunchForJobAndEmploye(jobId, selectedEmploye!!.id)
+                viewModel.getGlobalLastPunchForEmploye(selectedEmploye.id),
+                viewModel.getLastPunchForJobAndEmploye(jobId, selectedEmploye.id)
             ) { globalPunch, jobPunch ->
                 Pair(globalPunch, jobPunch)
             }.collect { value = it }
@@ -182,7 +182,7 @@ fun PunchButton(
     }
 
     val (globalLastPunch, lastPunchForJob) = punchInfo
-    val isPunchedInOnAnotherJob = (globalLastPunch?.punchType == "IN") && (globalLastPunch?.jobId != jobId)
+    val isPunchedInOnAnotherJob = (globalLastPunch?.punchType == "IN") && (globalLastPunch.jobId != jobId)
 
     Row {
         when {
@@ -200,7 +200,7 @@ fun PunchButton(
                 }
             }
             else -> {
-                Button(onClick = { viewModel.punchIn(jobId, selectedEmploye!!.id) }) {
+                Button(onClick = { viewModel.punchIn(jobId, selectedEmploye.id) }) {
                     Text("Punch In")
                 }
             }
