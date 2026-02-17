@@ -6,30 +6,23 @@ Application de gestion d'atelier de mécanique.
 
 Android application.
 
+-------------------------------------------------
 
 ### Free tier
 
-SQLite comme base de donnée.
+SQLite comme base de donnée... /  SQLite as Database...
 
-SQLite as Database
+Une seul appareil pour tous les utilisateurs... /  Single device for all users...
 
-Un utilisateur seul et une seul appareil.
+Peut être utiliser hors ligne... / Can be used offline...
 
-Single device single user...
+Système de donation a être ajouter bientôt /  Donation system coming soon...
+
+
+-------------------------------------------------
 
 ### Pro tier
 
-Serveur Crystal avec SQLite comme base de donnée.
-
-Hosted SQLite database with Crystal backend.
-
-Plusieurs utilisateurs & apareils.
-
-Multiple device & users.
-
-Subscription mensuel requise (Pro version)...
-
-require purshase in app (upg to pro) monthly paiment require...
-
+À venir...
 
 Guillaume Foisy
