@@ -2,9 +2,9 @@
 
 Application en dévelopment!
 
-Application de gestion d'atelier de mécanique.
+Application de gestion d'atelier de mécanique.  /  Mechanical workshop management application...
 
-Android application.
+Application Android.  /  Android application.
 
 -------------------------------------------------
 
