@@ -1,4 +1,4 @@
-# MechOS
+# MecaOS
 
 Application en dévelopment!
 
