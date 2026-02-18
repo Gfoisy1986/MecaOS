@@ -10,7 +10,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.mecaos"
+        applicationId = "com.guillaumefoisy.mecaos"
         minSdk = 23
         targetSdk = 36
         versionCode = 1

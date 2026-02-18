@@ -8,7 +8,7 @@ Application Android.  /  Android application.
 
 -------------------------------------------------
 
-### Free tier
+### Free tier  (MecaOS)
 
 SQLite comme base de donnée... /  SQLite as Database...
 
@@ -21,7 +21,7 @@ Système de donation a être ajouter bientôt /  Donation system coming soon...
 
 -------------------------------------------------
 
-### Pro tier
+### Pro tier  (MecaOS Pro)
 
 À venir...
 
