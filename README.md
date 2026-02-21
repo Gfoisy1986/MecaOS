@@ -1,28 +1,64 @@
-# MecaOS
+# MecaOS 🚗
 
-Application en dévelopment!
+An Android application for managing a mechanical workshop.  
+Une application Android pour la gestion d'un atelier de mécanique.
 
-Application de gestion d'atelier de mécanique.  /  Mechanical workshop management application...
+---
 
-Application Android.  /  Android application.
+## 🚀 Features / Fonctionnalités
 
--------------------------------------------------
+*   Inventaire Table
+*   Employee Table
+*   Client Table
+*   Flotte Table
+*   Bon de travail Table
+*   Jobs Table
+*   Travaux Section
+*   Facturation Section
+*   Compatbilité Section
+*   Notifications Section
 
-### Free tier  (MecaOS)
-
-SQLite comme base de donnée... /  SQLite as Database...
-
-Une seul appareil pour tous les utilisateurs... /  Single device for all users...
-
-Peut être utiliser hors ligne... / Can be used offline...
-
-Système de donation a être ajouter bientôt /  Donation system coming soon...
+---
 
 
--------------------------------------------------
+## Tiers
 
-### Pro tier  (MecaOS Pro)
+### MecaOS (Free)
 
-À venir...
+*   **Database:** SQLite
+*   **Usage:** Single device for all users
+*   **Connectivity:** Can be used offline
+*   **Donations:** A donation system will be added soon
 
-Guillaume Foisy
+</br>
+
+*   **Base de données :** SQLite
+*   **Utilisation :** Un seul appareil pour tous les utilisateurs
+*   **Connectivité :** Peut être utilisé hors ligne
+*   **Dons :** Un système de don sera bientôt ajouté
+
+### MecaOS Pro
+
+*Coming soon... / À venir...*
+
+---
+
+## 🛠️ Installation
+
+...
+
+## 📖 Usage
+
+...
+
+## 🤝 Contributing / Contribuer
+
+...
+
+## 📄 License / Licence
+
+...
+
+---
+
+Developed by Guillaume Foisy.
